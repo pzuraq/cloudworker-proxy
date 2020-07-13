@@ -1,4 +1,4 @@
-const KvStorage = require('../services/kv-storage');
+const KvStorage = require('cloudflare-kv-storage-rest');
 const constants = require('../constants');
 const utils = require('../utils');
 
@@ -27,14 +27,12 @@ module.exports = function kvStorageHandler({
   defaultIndexDocument,
   defaultErrorDocument,
   mime = {},
-  mode = 'rest',
 }) {
   const kvStorage = new KvStorage({
     accountId: kvAccountId,
     namespace: kvNamespace,
     authEmail: kvAuthEmail,
     authKey: kvAuthKey,
-    mode,
   });
 
   const mimeMappings = { ...constants.mime, ...mime };
