@@ -51,6 +51,7 @@ module.exports = function oauth2Handler({
   oauth2LoginPath = '/login',
   oauth2ServerTokenPath = '/oauth/token',
   oauth2ServerAuthorizePath = '',
+  oauth2ServerFullAuthPath = '',
   oauth2ServerLogoutPath,
 }) {
   if (!kvStorage) {
@@ -67,7 +68,7 @@ module.exports = function oauth2Handler({
   const callbackPath = oauth2CallbackPath;
   const callbackType = oauth2CallbackType;
   const serverTokenPath = oauth2ServerTokenPath;
-  const serverAuthorizePath = oauth2ServerAuthorizePath;
+  const serverAuthorizePath = oauth2ServerFullAuthPath || oauth2ServerAuthorizePath + '/authorize';
   const serverLogoutPath = oauth2ServerLogoutPath;
   const clientId = oauth2ClientId;
   const clientSecret = oauth2ClientSecret;
@@ -260,7 +261,7 @@ module.exports = function oauth2Handler({
       ctx.status = 302;
       ctx.set(
         'location',
-        `${authDomain}${serverAuthorizePath}/authorize?state=${state}&client_id=${clientId}&response_type=code&scope=${scope}&audience=${audience}&redirect_uri=${encodedRedirectUri}`,
+        `${authDomain}${serverAuthorizePath}?state=${state}&client_id=${clientId}&response_type=code&scope=${scope}&audience=${audience}&redirect_uri=${encodedRedirectUri}`,
       );
     }
   }
