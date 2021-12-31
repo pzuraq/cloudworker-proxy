@@ -17,6 +17,7 @@ function setDefaultLocation(url, defaultExtension, defaultIndexDocument) {
 }
 
 module.exports = function kvStorageHandler({
+  kvStorage,
   kvAccountId,
   kvNamespace,
   kvAuthEmail,
@@ -29,13 +30,15 @@ module.exports = function kvStorageHandler({
   mime = {},
   mode = 'rest',
 }) {
-  const kvStorage = new KvStorage({
-    accountId: kvAccountId,
-    namespace: kvNamespace,
-    authEmail: kvAuthEmail,
-    authKey: kvAuthKey,
-    mode,
-  });
+  if (!kvStorage) {
+    kvStorage = new KvStorage({
+      accountId: kvAccountId,
+      namespace: kvNamespace,
+      authEmail: kvAuthEmail,
+      authKey: kvAuthKey,
+      ttl: kvTtl,
+    });
+  }
 
   const mimeMappings = { ...constants.mime, ...mime };
 

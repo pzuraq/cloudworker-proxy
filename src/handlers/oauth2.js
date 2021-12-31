@@ -34,6 +34,7 @@ module.exports = function oauth2Handler({
   cookieName = 'proxy',
   cookieHttpOnly = true,
   allowPublicAccess = false,
+  kvStorage,
   kvAccountId,
   kvNamespace,
   kvAuthEmail,
@@ -52,13 +53,15 @@ module.exports = function oauth2Handler({
   oauth2ServerAuthorizePath = '',
   oauth2ServerLogoutPath,
 }) {
-  const kvStorage = new KvStorage({
-    accountId: kvAccountId,
-    namespace: kvNamespace,
-    authEmail: kvAuthEmail,
-    authKey: kvAuthKey,
-    ttl: kvTtl,
-  });
+  if (!kvStorage) {
+    kvStorage = new KvStorage({
+      accountId: kvAccountId,
+      namespace: kvNamespace,
+      authEmail: kvAuthEmail,
+      authKey: kvAuthKey,
+      ttl: kvTtl,
+    });
+  }
 
   const authDomain = oauth2AuthDomain;
   const callbackPath = oauth2CallbackPath;
